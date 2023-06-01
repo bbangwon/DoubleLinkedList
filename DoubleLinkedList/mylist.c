@@ -7,21 +7,21 @@
 void InitList(LIST_INFO *pListData)
 {
 	
-	pListData->pHead = (NODE*)malloc(sizeof(NODE));
-	pListData->pTail = (NODE*)malloc(sizeof(NODE));
+	pListData->pHead = (LNODE*)malloc(sizeof(LNODE));
+	pListData->pTail = (LNODE*)malloc(sizeof(LNODE));
 	pListData->nSize = 0;
 
-	memset(pListData->pHead, 0, sizeof(NODE));
-	memset(pListData->pTail, 0, sizeof(NODE));
+	memset(pListData->pHead, 0, sizeof(LNODE));
+	memset(pListData->pTail, 0, sizeof(LNODE));
 
 	pListData->pHead->next = pListData->pTail;
 	pListData->pTail->prev = pListData->pHead;
 }
 
-int InsertBefore(LIST_INFO* pListData, NODE* pDstNode, void* pParam)
+int InsertBefore(LIST_INFO* pListData, LNODE* pDstNode, void* pParam)
 {
-	NODE* pNewNode = malloc(sizeof(NODE));
-	memset(pNewNode, 0, sizeof(NODE));
+	LNODE* pNewNode = malloc(sizeof(LNODE));
+	memset(pNewNode, 0, sizeof(LNODE));
 
 	pNewNode->pData = pParam;
 
@@ -42,8 +42,8 @@ int InsertAtTail(LIST_INFO* pListData, void* pParam)
 
 int InsertAtHead(LIST_INFO* pListData, void* pParam)
 {
-	NODE* pNewNode = malloc(sizeof(NODE));
-	memset(pNewNode, 0, sizeof(NODE));
+	LNODE* pNewNode = malloc(sizeof(LNODE));
+	memset(pNewNode, 0, sizeof(LNODE));
 
 	//관리대상 자료에 관한 초기화 
 	pNewNode->pData = pParam;
@@ -62,7 +62,7 @@ int InsertAtHead(LIST_INFO* pListData, void* pParam)
 int InsertAt(LIST_INFO* pListData, int idx, void* pParam)
 {
 	int i = 0;
-	NODE* pTmp = pListData->pHead->next;
+	LNODE* pTmp = pListData->pHead->next;
 	while (pTmp != pListData->pTail)
 	{
 		if (i == idx)
@@ -83,7 +83,7 @@ int InsertAt(LIST_INFO* pListData, int idx, void* pParam)
 
 int DeleteNode(LIST_INFO* pListData, const char* pszKey)
 {
-	NODE* pNode = FindNode(pListData, pszKey);
+	LNODE* pNode = FindNode(pListData, pszKey);
 
 	pNode->prev->next = pNode->next;
 	pNode->next->prev = pNode->prev;
@@ -99,11 +99,11 @@ int DeleteNode(LIST_INFO* pListData, const char* pszKey)
 
 void ReleaseList(LIST_INFO* pListData)
 {
-	NODE* pTmp = pListData->pHead;
+	LNODE* pTmp = pListData->pHead;
 
 	while (pTmp != NULL)
 	{
-		NODE* pDelete = pTmp;
+		LNODE* pDelete = pTmp;
 		pTmp = pTmp->next;
 
 		printf("free(%p)\n", pDelete);
@@ -119,10 +119,10 @@ void ReleaseList(LIST_INFO* pListData)
 	puts("ReleaseList()");
 }
 
-NODE* GetAt(LIST_INFO* pListData, int idx)
+LNODE* GetAt(LIST_INFO* pListData, int idx)
 {
 	int i = 0;
-	NODE* pTmp = pListData->pHead->next;
+	LNODE* pTmp = pListData->pHead->next;
 	while (pTmp != pListData->pTail)
 	{
 		if (i == idx)
@@ -149,9 +149,9 @@ int IsEmpty(LIST_INFO* pListData)
 	return GetSize(pListData);
 }
 
-NODE* FindNode(LIST_INFO* pListData, const char* pszKey)
+LNODE* FindNode(LIST_INFO* pListData, const char* pszKey)
 {
-	NODE* pTmp = pListData->pHead->next;
+	LNODE* pTmp = pListData->pHead->next;
 	const char* (*pfGetKey)(void*) = NULL;
 
 	while (pTmp != pListData->pTail)
